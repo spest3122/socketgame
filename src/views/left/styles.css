@@ -1,0 +1,9 @@
+.app-left {
+    @apply flex flex-col;
+}
+.app-left .left-header {
+    @apply text-5xl font-semibold;
+}
+.app-left .left-main {
+    @apply border flex-grow overflow-auto;
+}
