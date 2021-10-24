@@ -1,0 +1,44 @@
+.person-item {
+    @apply flex mb-4;
+    .person-head {
+        @apply flex justify-center items-center relative p-1;
+
+        .person-rank {
+            @apply rounded-full 
+                absolute 
+                top-0 
+                left-0 
+                border-black 
+                border-2 
+                bg-white 
+                flex 
+                justify-center 
+                items-center;
+            width: 18px;
+            height: 18px;
+        }
+        .person-online {
+            @apply rounded-full bg-green-400 absolute bottom-0 right-0;
+            width: 10px;
+            height: 10px;
+        }
+        .person-avatar {
+            @apply rounded-full border-black border-2 flex justify-center items-center;
+            width: 44px;
+            height: 44px;
+        }
+    }
+    .person-info {
+        @apply flex flex-col justify-center pl-1;
+        .person-score {
+            @apply text-xs font-medium;
+        }
+        .person-thumbs {
+            @apply flex;
+            .person-thumb {
+                width: 18px;
+                height: 18px;
+            }
+        }
+    }
+}

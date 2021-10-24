@@ -1,0 +1,13 @@
+.app-left {
+    @apply flex flex-col;
+    .left-header {
+        @apply flex text-5xl font-semibold pl-6 pr-6 pt-3 pb-3;
+        .left-clock-icon {
+            width: 48px;
+            height: 48px;
+        }
+    }
+    .left-main {
+        @apply border flex-grow overflow-auto p-3;
+    }
+}

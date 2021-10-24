@@ -1,4 +1,4 @@
-import './app.css'
+import './app.scss'
 import AppLeft from '@views/left'
 
 function App() {
