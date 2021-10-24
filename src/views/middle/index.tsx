@@ -20,8 +20,10 @@ const AppMiddle = () => {
                 </div>
             </header>
             <main className="middle-main">
-                {content.map((item) => (
-                    <p className="context-text">{item}</p>
+                {content.map((item, index) => (
+                    <p className="content-text" key={`content${index}`}>
+                        {item}
+                    </p>
                 ))}
             </main>
         </section>

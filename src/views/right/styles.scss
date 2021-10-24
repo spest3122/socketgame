@@ -1,11 +1,12 @@
 .app-right {
     @apply border-2 border-black flex p-2 flex-grow flex-col;
     .right-msg {
-        @apply w-full flex-grow;
+        @apply w-full flex-grow overflow-auto;
     }
     .right-func {
+        @apply border-black border-2 flex p-2;
         .func-input {
-            @apply border-black border-2 p-2 w-full;
+            @apply flex-grow mr-2;
         }
     }
 }
