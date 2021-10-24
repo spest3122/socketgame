@@ -1,0 +1,29 @@
+.app-middle {
+    @apply ml-2 mr-2 w-2/5 flex flex-col h-full justify-items-stretch;
+
+    .middle-header,
+    .middle-main {
+        @apply border-2 border-black;
+    }
+    .middle-header {
+        @apply h-3/5 mb-2 p-2 flex flex-col items-center pb-4;
+        .middle-content {
+            @apply flex justify-center flex-col items-center mt-4;
+        }
+        .middle-quit {
+            @apply self-start text-blue-700;
+        }
+        .middle-main-title {
+            @apply text-8xl;
+        }
+        .middle-second-title {
+            @apply text-xl text-gray-500;
+        }
+    }
+    .middle-main {
+        @apply h-full overflow-auto p-2;
+        .context-text {
+            @apply mb-2;
+        }
+    }
+}

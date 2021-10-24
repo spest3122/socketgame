@@ -8,6 +8,6 @@
         }
     }
     .left-main {
-        @apply border flex-grow overflow-auto p-3;
+        @apply border-2 flex-grow overflow-auto p-3 border-black;
     }
 }

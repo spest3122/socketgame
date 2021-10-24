@@ -1,12 +1,14 @@
 import './app.scss'
 import AppLeft from '@views/left'
+import AppMiddle from '@views/middle'
+import AppRight from '@views/right'
 
 function App() {
     return (
         <div className="app">
             <AppLeft />
-            <section className="app-middle"></section>
-            <section className="app-right"></section>
+            <AppMiddle />
+            <AppRight />
         </div>
     )
 }
