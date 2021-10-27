@@ -10,7 +10,7 @@ const AppRight = () => {
     ])
 
     useEffect(() => {
-        function handleKeyboardkEvent(e: KeyboardEvent) {
+        const handleKeyboardkEvent = (e: KeyboardEvent) => {
             console.log(e)
         }
         const rightFunc = document.querySelector(
