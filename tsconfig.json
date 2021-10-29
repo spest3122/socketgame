@@ -18,7 +18,8 @@
         "noImplicitAny": true,
         "baseUrl": "./",
         "paths": {
-            "@views/*": ["src/views/*"]
+            "@views/*": ["src/views/*"],
+            "@api/*": ["src/api/*"]
         }
     },
     "include": ["./src"]
