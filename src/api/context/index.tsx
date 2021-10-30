@@ -1,11 +1,12 @@
+import { USERS, QUESTION, MESSAGELIST } from './context.js'
 import { createContext } from 'use-context-selector'
 
 interface WsContextType {
-    v: number
+    users: USERS
+    quest: QUESTION
+    msgList: MESSAGELIST
 }
 
-const WsContext = createContext<Partial<WsContextType>>({
-    v: 32,
-})
+const WsContext = createContext<Partial<WsContextType>>({})
 
 export default WsContext

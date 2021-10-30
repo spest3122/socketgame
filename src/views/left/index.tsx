@@ -1,8 +1,11 @@
 import './styles.scss'
 import PersonItem from './item'
 import ClockIcon from '@heroicons/react/outline/ClockIcon'
+import { useContextSelector } from 'use-context-selector'
+import WsContext from '@api/context'
 const AppLeft = () => {
-    const aa: number[] = [1, 3, 4, 5, 6, 7, 4, 5, 6, 7, 2, 3, 4, 5, 6, 7]
+    const users = useContextSelector(WsContext, (v) => v.users)
+
     return (
         <section className="app-left">
             <header className="left-header">
@@ -12,8 +15,8 @@ const AppLeft = () => {
                 <p className="left-clock-text">45: 63</p>
             </header>
             <main className="left-main">
-                {aa.map((item, index) => (
-                    <PersonItem key={'person' + index} />
+                {users?.map((item) => (
+                    <PersonItem key={item.id} {...item} />
                 ))}
             </main>
         </section>

@@ -17,13 +17,16 @@
             @apply text-8xl;
         }
         .middle-second-title {
-            @apply text-xl text-gray-500;
+            @apply text-xl text-gray-500 text-center;
         }
     }
     .middle-main {
         @apply h-full overflow-auto p-2;
         .content-text {
             @apply mb-2;
+            .content-text-highlight {
+                @apply bg-blue-100;
+            }
         }
     }
 }

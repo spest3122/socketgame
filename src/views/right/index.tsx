@@ -1,14 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import WsContext from '@api/context'
+import { useContextSelector } from 'use-context-selector'
+import { useEffect } from 'react'
 import './styles.scss'
-interface Msg {
-    msg: string
-}
 const AppRight = () => {
-    const [msg, setMsg] = useState<Array<Msg>>([
-        { msg: '2021/10/20 13:20:10 dddd加入房間' },
-        { msg: '2021/10/20 13:20:10 dddd加入房間' },
-    ])
-
+    const msgList = useContextSelector(WsContext, (v) => v.msgList)!
     useEffect(() => {
         const handleKeyboardkEvent = (e: KeyboardEvent) => {
             console.log(e)
@@ -24,8 +19,10 @@ const AppRight = () => {
     return (
         <section className="app-right">
             <section className="right-msg">
-                {msg.map((item, index) => (
-                    <p key={`msg${index}`}>{item.msg}</p>
+                {msgList.map((item) => (
+                    <p
+                        key={`msg${item.id}`}
+                    >{`${item.dateTime} ${item.message}`}</p>
                 ))}
             </section>
             <footer className="right-func">
