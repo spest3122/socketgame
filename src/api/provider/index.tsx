@@ -52,7 +52,21 @@ const WsProvider: FC<WsChild> = ({ children }) => {
             })
 
             ws.on('messages', (data) => {
-                console.log('this is messages', data)
+                console.log(data)
+
+                let joinOrLeave = ['JOIN', 'LEAVE']
+                if (joinOrLeave.includes(data.type)) {
+                    setMsgList((prev) => [...prev, data])
+                } else if (data.type === 'OVER_THEN_RESTART') {
+                    setUsers(data.users)
+                    setQuest(data.question)
+                    setMsgList(data.messages)
+                } else if (data.type === 'BLESS_YOU') {
+                    setMsgList((prev) => [
+                        ...prev,
+                        { ...data.messages, type: data.blessType },
+                    ])
+                }
             })
         }
     }, [ws])
@@ -60,9 +74,17 @@ const WsProvider: FC<WsChild> = ({ children }) => {
         ws?.emit('giveUp')
     }
     const doSendAnswer = (data: string) => {
+        if (data === '') {
+            alert('你當我通靈?')
+            return
+        }
         ws?.emit('answer', data)
     }
     const doSendMsg = (data: string) => {
+        if (data === '') {
+            alert('你當我通靈?')
+            return
+        }
         ws?.emit('message', data)
     }
 
