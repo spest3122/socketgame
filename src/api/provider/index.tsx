@@ -8,7 +8,7 @@ type WsChild = {
 }
 //ws link https://l8-upgrade-ws-api1.herokuapp.com/
 const WsProvider: FC<WsChild> = ({ children }) => {
-    const ws = useRef<Socket | null>(null)
+    const [ws, setWs] = useState<Socket | null>(null)
     const [users, setUsers] = useState<USERS>([])
     const [quest, setQuest] = useState<QUESTION>({
         description: '',
@@ -19,35 +19,67 @@ const WsProvider: FC<WsChild> = ({ children }) => {
     })
     const [msgList, setMsgList] = useState<MESSAGELIST>([])
     useEffect(() => {
-        ws.current = io('https://l8-upgrade-ws-api1.herokuapp.com/', {
-            extraHeaders: {
-                user_info: JSON.stringify({
-                    id: '2b8cf3a3-5eec-4dca-a663-9c3a9bb89818',
-                    name: 'nono',
-                }),
-            },
-        })
-        ws.current.on('connect', () => {
-            console.log('連接上了', ws.current)
-        })
-        ws.current.on('disconnect', () => {
-            console.log('失連了', ws.current)
-        })
-        ws.current.on('connection', (data) => {
-            let { users, question, messages } = data
-            console.log(data)
-
-            setUsers(users)
-            setQuest(question)
-            setMsgList(messages)
-        })
-        const wsCurrent = ws.current
+        setWs(
+            io('https://l8-upgrade-ws-api1.herokuapp.com/', {
+                extraHeaders: {
+                    user_info: JSON.stringify({
+                        id: localStorage.getItem('userId'),
+                        name: 'nono',
+                    }),
+                },
+            })
+        )
         return () => {
-            wsCurrent.close()
+            ws?.close()
         }
     }, [])
+    useEffect(() => {
+        if (ws) {
+            ws.on('connect', () => {
+                console.log('連接上了', ws)
+            })
+            ws.on('disconnect', () => {
+                ws.close()
+            })
+            ws.on('connection', (data) => {
+                let { users, question, messages, user } = data
+                console.log(data)
+
+                localStorage.setItem('userId', user.id)
+                setUsers(users)
+                setQuest(question)
+                setMsgList(messages)
+            })
+
+            ws.on('messages', (data) => {
+                console.log('this is messages', data)
+            })
+        }
+    }, [ws])
+
+    const doPing = () => {
+        ws?.emit('ping', {})
+    }
+
+    const doLikeOrDislike = ({
+        type,
+        userId,
+    }: {
+        type: string
+        userId: string
+    }) => {
+        if (type === '') {
+            alert('你當我通靈?')
+            return
+        }
+        if (userId === '') {
+            alert('你當我靈媒?')
+            return
+        }
+        ws?.emit('bless', { type: type, userId: userId })
+    }
     return (
-        <WsContext.Provider value={{ users, quest, msgList }}>
+        <WsContext.Provider value={{ users, quest, msgList, doLikeOrDislike }}>
             {children}
         </WsContext.Provider>
     )
