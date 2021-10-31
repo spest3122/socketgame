@@ -12,6 +12,9 @@ interface WsContextType {
         type: string
         userId: string
     }) => void
+    doGiveUp: () => void
+    doSendAnswer: (data: string) => void
+    doSendMsg: (data: string) => void
 }
 
 const WsContext = createContext<Partial<WsContextType>>({})

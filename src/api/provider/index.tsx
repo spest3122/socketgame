@@ -56,9 +56,14 @@ const WsProvider: FC<WsChild> = ({ children }) => {
             })
         }
     }, [ws])
-
-    const doPing = () => {
-        ws?.emit('ping', {})
+    const doGiveUp = () => {
+        ws?.emit('giveUp')
+    }
+    const doSendAnswer = (data: string) => {
+        ws?.emit('answer', data)
+    }
+    const doSendMsg = (data: string) => {
+        ws?.emit('message', data)
     }
 
     const doLikeOrDislike = ({
@@ -79,7 +84,17 @@ const WsProvider: FC<WsChild> = ({ children }) => {
         ws?.emit('bless', { type: type, userId: userId })
     }
     return (
-        <WsContext.Provider value={{ users, quest, msgList, doLikeOrDislike }}>
+        <WsContext.Provider
+            value={{
+                users,
+                quest,
+                msgList,
+                doLikeOrDislike,
+                doGiveUp,
+                doSendAnswer,
+                doSendMsg,
+            }}
+        >
             {children}
         </WsContext.Provider>
     )

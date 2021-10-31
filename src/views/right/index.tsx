@@ -1,6 +1,6 @@
 import WsContext from '@api/context'
 import { useContextSelector } from 'use-context-selector'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import './styles.scss'
 
 let COLOR: { [key: string]: string | string[] } = {
@@ -14,10 +14,21 @@ let COLOR: { [key: string]: string | string[] } = {
 }
 
 const AppRight = () => {
-    const msgList = useContextSelector(WsContext, (v) => v.msgList)!
+    const { msgList, doSendMsg, doSendAnswer } = useContextSelector(
+        WsContext,
+        (v) => v
+    )
+
+    const [msg, setMsg] = useState<string>('')
     useEffect(() => {
         const handleKeyboardkEvent = (e: KeyboardEvent) => {
-            console.log(e)
+            if (e.ctrlKey && e.key === 'Enter') {
+                doSendAnswer(e.target.value)
+                setMsg('')
+            } else if (e.key === 'Enter') {
+                doSendMsg(e.target.value)
+                setMsg('')
+            }
         }
         const rightFunc = document.querySelector(
             '.right-func'
@@ -27,10 +38,16 @@ const AppRight = () => {
             rightFunc.removeEventListener('keydown', handleKeyboardkEvent)
         }
     }, [])
+
+    const sendMsg = () => {
+        doSendMsg(msg)
+        setMsg('')
+    }
+
     return (
         <section className="app-right">
             <section className="right-msg">
-                {msgList.map((item) => (
+                {msgList?.map((item) => (
                     <p
                         className={`${COLOR[item.type]}`}
                         key={`msg${item.id}`}
@@ -38,8 +55,13 @@ const AppRight = () => {
                 ))}
             </section>
             <footer className="right-func">
-                <input type="text" className="func-input" />
-                <button>送出</button>
+                <input
+                    type="text"
+                    className="func-input"
+                    value={msg}
+                    onChange={(e) => setMsg(e.target.value)}
+                />
+                <button onClick={sendMsg}>送出</button>
             </footer>
         </section>
     )
