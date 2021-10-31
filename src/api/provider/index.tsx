@@ -24,7 +24,7 @@ const WsProvider: FC<WsChild> = ({ children }) => {
                 extraHeaders: {
                     user_info: JSON.stringify({
                         id: localStorage.getItem('userId'),
-                        name: 'nono',
+                        name: 'dddd',
                     }),
                 },
             })
@@ -52,8 +52,6 @@ const WsProvider: FC<WsChild> = ({ children }) => {
             })
 
             ws.on('messages', (data) => {
-                console.log(data)
-
                 let joinOrLeave = ['JOIN', 'LEAVE']
                 if (joinOrLeave.includes(data.type)) {
                     setMsgList((prev) => [...prev, data])
@@ -64,8 +62,13 @@ const WsProvider: FC<WsChild> = ({ children }) => {
                 } else if (data.type === 'BLESS_YOU') {
                     setMsgList((prev) => [
                         ...prev,
-                        { ...data.messages, type: data.blessType },
+                        { ...data, type: data.blessType },
                     ])
+                } else if (data.type === 'MESSAGE') {
+                    setMsgList((prev) => [...prev, data])
+                } else if (data.type === 'GIVE_UP') {
+                    setMsgList((prev) => [...prev, data])
+                    setQuest(data.newQuestion)
                 }
             })
         }

@@ -18,26 +18,16 @@ const AppRight = () => {
         WsContext,
         (v) => v
     )
-
     const [msg, setMsg] = useState<string>('')
-    useEffect(() => {
-        const handleKeyboardkEvent = (e: KeyboardEvent) => {
-            if (e.ctrlKey && e.key === 'Enter') {
-                doSendAnswer(e.target.value)
-                setMsg('')
-            } else if (e.key === 'Enter') {
-                doSendMsg(e.target.value)
-                setMsg('')
-            }
+    const handleKeyboardkEvent = (e: KeyboardEvent) => {
+        if (e.ctrlKey && e.key === 'Enter') {
+            doSendAnswer(msg)
+            setMsg('')
+        } else if (e.key === 'Enter') {
+            doSendMsg(msg)
+            setMsg('')
         }
-        const rightFunc = document.querySelector(
-            '.right-func'
-        ) as HTMLDivElement
-        rightFunc.addEventListener('keydown', handleKeyboardkEvent)
-        return () => {
-            rightFunc.removeEventListener('keydown', handleKeyboardkEvent)
-        }
-    }, [])
+    }
 
     const sendMsg = () => {
         doSendMsg(msg)
@@ -51,7 +41,9 @@ const AppRight = () => {
                     <p
                         className={`${COLOR[item.type]}`}
                         key={`msg${item.id}`}
-                    >{`${item.dateTime} ${item.message}`}</p>
+                    >{`${item.dateTime} ${
+                        item.type === 'MESSAGE' ? item.from.name + ':' : ''
+                    } ${item.message}`}</p>
                 ))}
             </section>
             <footer className="right-func">
@@ -60,6 +52,7 @@ const AppRight = () => {
                     className="func-input"
                     value={msg}
                     onChange={(e) => setMsg(e.target.value)}
+                    onKeyDown={(e) => handleKeyboardkEvent(e)}
                 />
                 <button onClick={sendMsg}>送出</button>
             </footer>
