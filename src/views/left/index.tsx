@@ -42,7 +42,7 @@ const AppLeft = () => {
 
     useEffect(() => {
         if (timer.countDown === 0) {
-            doRestart()
+            doRestart!()
         }
     }, [timer.countDown])
 

@@ -1,6 +1,6 @@
 import WsContext from '@api/context'
 import { useContextSelector } from 'use-context-selector'
-import { useEffect, useState } from 'react'
+import { useState, KeyboardEvent } from 'react'
 import './styles.scss'
 
 let COLOR: { [key: string]: string | string[] } = {
@@ -19,18 +19,18 @@ const AppRight = () => {
         (v) => v
     )
     const [msg, setMsg] = useState<string>('')
-    const handleKeyboardkEvent = (e: KeyboardEvent) => {
+    const handleKeyboardkEvent = (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.ctrlKey && e.key === 'Enter') {
-            doSendAnswer(msg)
+            doSendAnswer!(msg)
             setMsg('')
         } else if (e.key === 'Enter') {
-            doSendMsg(msg)
+            doSendMsg!(msg)
             setMsg('')
         }
     }
 
     const sendMsg = () => {
-        doSendMsg(msg)
+        doSendMsg!(msg)
         setMsg('')
     }
 
@@ -42,7 +42,7 @@ const AppRight = () => {
                         className={`${COLOR[item.type]}`}
                         key={`msg${item.id}`}
                     >{`${item.dateTime} ${
-                        item.type === 'MESSAGE' ? item.from.name + ':' : ''
+                        item.type === 'MESSAGE' ? item.from?.name + ':' : ''
                     } ${item.message}`}</p>
                 ))}
             </section>

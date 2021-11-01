@@ -30,13 +30,13 @@ const PersonItem = (props: USER) => {
                         <ThumbUpIcon
                             className="person-thumb"
                             onClick={() =>
-                                doLikeOrDislike({ type: 'GOOD', userId: id })
+                                doLikeOrDislike!({ type: 'GOOD', userId: id })
                             }
                         />
                         <ThumbDownIcon
                             className="person-thumb"
                             onClick={() =>
-                                doLikeOrDislike({ type: 'BAD', userId: id })
+                                doLikeOrDislike!({ type: 'BAD', userId: id })
                             }
                         />
                     </div>

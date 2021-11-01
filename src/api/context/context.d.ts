@@ -11,11 +11,15 @@ export type MESSAGE = {
     message: string
     type: string
     user: USER
+    from?: {
+        id: string
+        name: string
+    }
 }
 
-export type MESSAGELIST = MESSAGE[] | []
+export type MESSAGELIST = MESSAGE[]
 
-export type USERS = USER[] | []
+export type USERS = USER[]
 
 export type STARTDATETIME = string
 
@@ -27,7 +31,7 @@ export type CONTENT = {
 export type QUESTION = {
     description: string
     id: number
-    matches: number[] | []
+    matches: number[]
     title: string
-    contents: CONTENT[] | []
+    contents: CONTENT[]
 }
