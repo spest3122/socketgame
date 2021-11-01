@@ -52,6 +52,8 @@ const WsProvider: FC<WsChild> = ({ children }) => {
             })
 
             ws.on('messages', (data) => {
+                console.log(data)
+
                 let joinOrLeave = ['JOIN', 'LEAVE']
                 if (joinOrLeave.includes(data.type)) {
                     setMsgList((prev) => [...prev, data])
@@ -108,6 +110,9 @@ const WsProvider: FC<WsChild> = ({ children }) => {
         }
         ws?.emit('bless', { type: type, userId: userId })
     }
+    const doRestart = () => {
+        ws?.emit('restart')
+    }
     return (
         <WsContext.Provider
             value={{
@@ -118,6 +123,7 @@ const WsProvider: FC<WsChild> = ({ children }) => {
                 doGiveUp,
                 doSendAnswer,
                 doSendMsg,
+                doRestart,
             }}
         >
             {children}

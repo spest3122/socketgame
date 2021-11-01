@@ -5,6 +5,7 @@ interface WsContextType {
     users: USERS
     quest: QUESTION
     msgList: MESSAGELIST
+    finalCountDown: string
     doLikeOrDislike: ({
         type,
         userId,
@@ -15,6 +16,7 @@ interface WsContextType {
     doGiveUp: () => void
     doSendAnswer: (data: string) => void
     doSendMsg: (data: string) => void
+    doRestart: () => void
 }
 
 const WsContext = createContext<Partial<WsContextType>>({})
