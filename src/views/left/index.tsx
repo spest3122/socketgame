@@ -9,7 +9,7 @@ interface TIMER {
     min: number | string
     sec: number | string
 }
-const sixtySec = 5
+const sixtySec = 3600
 
 const AppLeft = () => {
     const { users, doRestart } = useContextSelector(WsContext, (v) => v)
