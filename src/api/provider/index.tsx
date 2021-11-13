@@ -24,7 +24,7 @@ const WsProvider: FC<WsChild> = ({ children }) => {
                 extraHeaders: {
                     user_info: JSON.stringify({
                         id: localStorage.getItem('userId'),
-                        name: 'dddd',
+                        name: 'nono',
                     }),
                 },
             })
@@ -52,8 +52,6 @@ const WsProvider: FC<WsChild> = ({ children }) => {
             })
 
             ws.on('messages', (data) => {
-                console.log(data)
-
                 let joinOrLeave = ['JOIN', 'LEAVE']
                 if (joinOrLeave.includes(data.type)) {
                     setMsgList((prev) => [...prev, data])

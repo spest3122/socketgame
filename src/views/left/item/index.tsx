@@ -2,15 +2,12 @@ import './styles.scss'
 import { ThumbDownIcon, ThumbUpIcon } from '@heroicons/react/outline'
 import { USER } from '@api/context/context'
 import WsContext from '@api/context'
-import { useContextSelector } from 'use-context-selector'
+import { useContext } from 'use-context-selector'
 
 const PersonItem = (props: USER) => {
     const { name, online, score, id } = props
     const me = localStorage.getItem('userId')
-    const doLikeOrDislike = useContextSelector(
-        WsContext,
-        (v) => v.doLikeOrDislike
-    )
+    const { doLikeOrDislike } = useContext(WsContext)
 
     return (
         <div className="person-item">

@@ -4,11 +4,10 @@ import { useContextSelector } from 'use-context-selector'
 import './styles.scss'
 
 const AppMiddle = () => {
-    const { contents, title, description, matches } = useContextSelector(
-        WsContext,
-        (v) => v.quest
-    )!
-    const doGiveUp = useContextSelector(WsContext, (v) => v.doGiveUp)
+    const {
+        quest: { contents, title, description, matches },
+        doGiveUp,
+    } = useContextSelector(WsContext, (v) => v)
 
     return (
         <section className="app-middle">

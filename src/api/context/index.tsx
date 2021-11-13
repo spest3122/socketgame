@@ -19,6 +19,6 @@ interface WsContextType {
     doRestart: () => void
 }
 
-const WsContext = createContext<Partial<WsContextType>>({})
+const WsContext = createContext<WsContextType>({} as WsContextType)
 
 export default WsContext
