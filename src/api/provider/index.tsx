@@ -8,7 +8,7 @@ type WsChild = {
 }
 //ws link https://l8-upgrade-ws-api1.herokuapp.com/
 const WsProvider: FC<WsChild> = ({ children }) => {
-    const [ws, setWs] = useState<Socket | null>(null)
+    const ws = useRef<Socket>({} as Socket)
     const [users, setUsers] = useState<USERS>([])
     const [quest, setQuest] = useState<QUESTION>({
         description: '',
@@ -19,76 +19,73 @@ const WsProvider: FC<WsChild> = ({ children }) => {
     })
     const [msgList, setMsgList] = useState<MESSAGELIST>([])
     useEffect(() => {
-        setWs(
-            io('https://l8-upgrade-ws-api1.herokuapp.com/', {
-                extraHeaders: {
-                    user_info: JSON.stringify({
-                        id: localStorage.getItem('userId'),
-                        name: 'nono',
-                    }),
-                },
-            })
-        )
+        const _socket = io('https://l8-upgrade-ws-api1.herokuapp.com/', {
+            extraHeaders: {
+                user_info: JSON.stringify({
+                    id: localStorage.getItem('userId'),
+                    name: 'nono',
+                }),
+            },
+        })
+        _socket.on('connect', () => {
+            console.log('連接上了', ws)
+        })
+        _socket.on('disconnect', () => {
+            ws.current?.close()
+        })
+        _socket.on('connection', (data) => {
+            let { users, question, messages, user } = data
+            console.log(data)
+
+            localStorage.setItem('userId', user.id)
+            setUsers(users)
+            setQuest(question)
+            setMsgList(messages)
+        })
+
+        _socket.on('messages', (data) => {
+            console.log(data, 33)
+
+            let joinOrLeave = ['JOIN', 'LEAVE']
+            if (joinOrLeave.includes(data.type)) {
+                setMsgList((prev) => [...prev, data])
+            } else if (data.type === 'OVER_THEN_RESTART') {
+                setUsers(data.users)
+                setQuest(data.question)
+                setMsgList(data.messages)
+            } else if (data.type === 'BLESS_YOU') {
+                setMsgList((prev) => [
+                    ...prev,
+                    { ...data, type: data.blessType },
+                ])
+            } else if (data.type === 'MESSAGE') {
+                setMsgList((prev) => [...prev, data])
+            } else if (data.type === 'GIVE_UP') {
+                setMsgList((prev) => [...prev, data])
+                setQuest(data.newQuestion)
+            }
+        })
+        ws.current = _socket
         return () => {
-            ws?.close()
+            ws.current?.close()
         }
     }, [])
-    useEffect(() => {
-        if (ws) {
-            ws.on('connect', () => {
-                console.log('連接上了', ws)
-            })
-            ws.on('disconnect', () => {
-                ws.close()
-            })
-            ws.on('connection', (data) => {
-                let { users, question, messages, user } = data
-                console.log(data)
-
-                localStorage.setItem('userId', user.id)
-                setUsers(users)
-                setQuest(question)
-                setMsgList(messages)
-            })
-
-            ws.on('messages', (data) => {
-                let joinOrLeave = ['JOIN', 'LEAVE']
-                if (joinOrLeave.includes(data.type)) {
-                    setMsgList((prev) => [...prev, data])
-                } else if (data.type === 'OVER_THEN_RESTART') {
-                    setUsers(data.users)
-                    setQuest(data.question)
-                    setMsgList(data.messages)
-                } else if (data.type === 'BLESS_YOU') {
-                    setMsgList((prev) => [
-                        ...prev,
-                        { ...data, type: data.blessType },
-                    ])
-                } else if (data.type === 'MESSAGE') {
-                    setMsgList((prev) => [...prev, data])
-                } else if (data.type === 'GIVE_UP') {
-                    setMsgList((prev) => [...prev, data])
-                    setQuest(data.newQuestion)
-                }
-            })
-        }
-    }, [ws])
     const doGiveUp = () => {
-        ws?.emit('giveUp')
+        ws.current?.emit('giveUp')
     }
     const doSendAnswer = (data: string) => {
         if (data === '') {
             alert('你當我通靈?')
             return
         }
-        ws?.emit('answer', data)
+        ws.current?.emit('answer', data)
     }
     const doSendMsg = (data: string) => {
         if (data === '') {
             alert('你當我通靈?')
             return
         }
-        ws?.emit('message', data)
+        ws.current?.emit('message', data)
     }
 
     const doLikeOrDislike = ({
@@ -106,10 +103,10 @@ const WsProvider: FC<WsChild> = ({ children }) => {
             alert('你當我靈媒?')
             return
         }
-        ws?.emit('bless', { type: type, userId: userId })
+        ws.current?.emit('bless', { type: type, userId: userId })
     }
     const doRestart = () => {
-        ws?.emit('restart')
+        ws.current?.emit('restart')
     }
     return (
         <WsContext.Provider
